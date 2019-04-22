@@ -1,0 +1,16 @@
+---
+cassandra_version: "3.11.4"
+cassandra_url: "http://www-eu.apache.org/dist/cassandra/{{cassandra_version}}/apache-cassandra-{{cassandra_version}}-bin.tar.gz"
+cassandra_dir: "/usr/local/lib/cassandra"
+
+cassandra_config_dir: "/etc/cassandra"
+cassandra_log_dir: "/var/log/cassandra"
+
+cassandra_base_data_dir: "/var/lib/cassandra"
+cassandra_data_dir: "{{cassandra_base_data_dir}}/data"
+cassandra_commitlog_dir: "{{cassandra_base_data_dir}}/commitlog"
+cassandra_hints_dir: "{{cassandra_base_data_dir}}/hints"
+cassandra_saves_dir: "{{cassandra_base_data_dir}}/saved_caches"
+
+cassandra_cluster_name: "subutai"
+cassandra_seeds: "localhost"

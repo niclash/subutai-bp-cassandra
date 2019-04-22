@@ -1,0 +1,15 @@
+# {{ansible_managed}}
+
+[Unit]
+Description=Apache Cassandra service
+After=network.target
+
+[Service]
+Type=forking
+User=cassandra
+Group=cassandra
+ExecStart={{cassandra_dir}}/bin/cassandra
+ExecStop=
+ExecReload=
+Restart=always
+

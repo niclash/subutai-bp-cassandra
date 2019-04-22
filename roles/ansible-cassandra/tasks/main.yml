@@ -1,0 +1,75 @@
+---
+- group: name=cassandra system=yes
+- user: name=cassandra group=cassandra system=yes
+
+- name: Create {{cassandra_dir}}
+  file:
+    path: "{{cassandra_dir}}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0775
+
+- name: Install Cassandra into {{cassandra_dir}}
+  unarchive:
+    src: "{{cassandra_url}}"
+    dest: "{{cassandra_dir}}"
+    remote_src: True
+    extra_opts: [ "--strip-components=1" ]
+  notify:
+    - restart cassandra
+
+- name: Create directories.
+  file: path={{item}} state=directory owner=cassandra group=cassandra
+  with_items:
+    - "{{cassandra_config_dir}}"
+    - "{{cassandra_log_dir}}"
+    - "{{cassandra_data_dir}}"
+    - "{{cassandra_saves_dir}}"
+    - "{{cassandra_commitlog_dir}}"
+
+- name: Change ownership of directories.
+  file: path={{item}} state=directory owner=cassandra group=cassandra recurse=yes
+  with_items:
+    - "{{cassandra_config_dir}}"
+    - "{{cassandra_log_dir}}"
+    - "{{cassandra_data_dir}}"
+    - "{{cassandra_saves_dir}}"
+    - "{{cassandra_commitlog_dir}}"
+
+- name: Systemd script.
+  template: src=cassandra.service.j2 dest=/etc/systemd/system/cassandra.service
+  notify:
+    - restart cassandra
+
+- name: Write security limits file.
+  template: src=limits.conf.j2 dest=/etc/security/limits.d/cassandra.conf
+  notify:
+    - restart cassandra
+
+- name: Write configuration files.
+  template: src={{item}}.j2 dest={{cassandra_dir}}/conf/{{item}} owner=cassandra group=cassandra
+  with_items:
+    - jvm.options
+    - logback.xml
+  notify:
+    - restart cassandra
+
+- name: Need more VM memory
+  lineinfile:
+    destfile: /etc/sysctl.conf
+    regexp: '^vm.max_map_count'
+    line: 'vm.max_map_count = 131072'
+  notify:
+    - restart cassandra
+
+- name: Write cassandra.yaml file.
+  template: src=cassandra.yaml.j2 dest={{cassandra_config_dir}}/cassandra.yaml owner=cassandra group=cassandra
+  notify:
+    - restart cassandra
+
+- name: Start cassandra
+  service: name=cassandra.service state=started enabled=yes
+  notify:
+    - restart cassandra
+

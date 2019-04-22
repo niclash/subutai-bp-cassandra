@@ -1,0 +1,8 @@
+---
+- name: restart cassandra
+  shell: /bin/systemctl daemon-reload
+  notify: restart cassandra 2
+
+- name: restart cassandra 2
+  service: name=cassandra state=restarted
+
