@@ -7,7 +7,7 @@
   "containers": [
     {
       "hostname": "cassandra",
-      "template": "debian-buster",
+      "template": "debian-stretch",
       "peer-criteria": "SRV-GROUP",
       "peer-layout": "cassandra",
       "size": "HUGE",
@@ -15,8 +15,8 @@
         {
           "protocol": "tcp",
           "domain": "${DomainName}",
-          "internal-port": "7000",
-          "external-port": "7000"
+          "internal-port": "9042",
+          "external-port": "9042"
         }
       ]
     }
