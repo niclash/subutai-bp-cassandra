@@ -12,5 +12,5 @@ cassandra_commitlog_dir: "{{cassandra_base_data_dir}}/commitlog"
 cassandra_hints_dir: "{{cassandra_base_data_dir}}/hints"
 cassandra_saves_dir: "{{cassandra_base_data_dir}}/saved_caches"
 
-cassandra_cluster_name: "subutai"
+cassandra_cluster_name: "cassandra"
 cassandra_seeds: "localhost"

@@ -41,10 +41,6 @@
       {
         "key": "cassandra_cluster_name",
         "value": "${ClusterName}"
-      },
-      {
-        "key": "cassandra_seeds",
-        "value": "${CassandraSeeds}"
       }
     ],
     "groups": [
@@ -80,12 +76,6 @@
       "type": "string",
       "validation": ".*",
       "default": "cassandra-cluster"
-    },
-    "CassandraSeeds": {
-      "description": "Known host names that the members of the Cassandra cluster will try to connect to during startup to establish the topology.",
-      "type": "string",
-      "validation": ".*",
-      "default": ""
     }
   }
 }
